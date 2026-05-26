@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЛР6 — CSS Grid | Печко А.А.</title>
+    <link rel="stylesheet" href="laba6.css">
+</head>
+<body>
+
+    <!-- БУРГЕР -->
+    <input type="checkbox" id="burger-toggle" class="burger-checkbox">
+    <label for="burger-toggle" class="burger-icon">
+        <span></span><span></span><span></span>
+    </label>
+    <div class="mobile-nav">
+        <a href="#">Главная</a>
+        <a href="#">О нас</a>
+        <a href="#">Услуги</a>
+        <a href="#">Портфолио</a>
+        <a href="#">Блог</a>
+        <a href="#">Контакты</a>
+    </div>
+
+    <!-- ДЕСКТОП-НАВ -->
+    <nav class="desktop-nav">
+        <a href="#">Главная</a>
+        <a href="#">О нас</a>
+        <a href="#">Услуги</a>
+        <a href="#">Портфолио</a>
+        <a href="#">Блог</a>
+        <a href="#">Контакты</a>
+    </nav>
+
+    <!-- ===== ОСНОВНОЙ GRID-КОНТЕЙНЕР ===== -->
+    <div class="master-grid">
+
+        <header class="grid-header">
+            <span class="logo-text">✦ CSS GRID ✦</span>
+            <div class="student-name">Печко Алексей Александрович · ПЗТ-43 · Лабораторная работа №6</div>
+        </header>
+
+        <aside class="grid-sidebar">
+            <img class="profile-photo" src="mustang.jpg" alt="Аватар">
+            <div class="profile-name">Алексей Печко</div>
+            <div class="profile-bio">Веб-разработчик. CSS Grid и адаптивные интерфейсы.</div>
+            <ul class="prop-list">
+                <li><code>display: grid</code></li>
+                <li><code>grid-template-rows</code></li>
+                <li><code>grid-template-columns</code></li>
+                <li><code>grid-template-areas</code></li>
+                <li><code>grid-template</code></li>
+                <li><code>repeat() / minmax()</code></li>
+                <li><code>grid-row-gap / grid-column-gap</code></li>
+                <li><code>grid-gap</code></li>
+                <li><code>align-content / justify-content</code></li>
+                <li><code>place-content</code></li>
+                <li><code>align-items / justify-items</code></li>
+                <li><code>place-items</code></li>
+                <li><code>grid-auto-rows / grid-auto-columns</code></li>
+                <li><code>grid-auto-flow</code></li>
+                <li><code>grid</code> (shorthand)</li>
+            </ul>
+        </aside>
+
+        <main class="grid-content">
+            <h3>🌟 Галерея / Портфолио</h3>
+            <div class="news-grid">
+                <div class="news-card">
+                    <img class="news-img" src="lot.jpg" alt="Горное озеро">
+                    <div class="news-text">
+                        <h4>Горное озеро</h4>
+                        <p>Адаптивная сетка, анимации, тёмная тема.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img class="news-img" src="mustang.jpg" alt="Гора Фудзи">
+                    <div class="news-text">
+                        <h4>Гора Фудзи</h4>
+                        <p>Grid-каталог, фильтры, корзина.</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img class="news-img" src="dvs.jpg" alt="Живописный пейзаж">
+                    <div class="news-text">
+                        <h4>Живописный пейзаж</h4>
+                        <p>Сложная компоновка Grid-виджетов.</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h3>📐 Выравнивание</h3>
+            <div class="property-table">
+                <div class="property-item">align-content: center</div>
+                <div class="property-item">justify-content: center</div>
+                <div class="property-item">place-content: center</div>
+                <div class="property-item">align-items: stretch</div>
+                <div class="property-item">justify-items: stretch</div>
+                <div class="property-item">place-items: stretch</div>
+            </div>
+            <p class="hint"><code>repeat(3, minmax(80px, auto))</code> + <code>minmax(220px, 1fr)</code></p>
+        </main>
+
+        <aside class="grid-extra">
+            <h3>🎨 Коллаж</h3>
+            <div class="collage">
+                <img class="collage-img" src="mustang.jpg" alt="пейзаж 1">
+                <img class="collage-img" src="lot.jpg" alt="пейзаж 2">
+                <img class="collage-img" src="dvs.jpg" alt="пейзаж 3">
+                <img class="collage-img" src="mustang.jpg" alt="пейзаж 4">
+            </div>
+            <p class="hint"><code>grid-auto-rows: minmax(70px, auto)</code></p>
+        </aside>
+
+        <footer class="grid-footer">
+            <p>© 2026 Адаптивная вёрстка · Печко Алексей Александрович</p>
+            <div class="social">
+                <a href="#">VK</a> · <a href="#">Instagram</a> · <a href="#">Telegram</a>
+            </div>
+        </footer>
+
+    </div><!-- /master-grid -->
+
+
+    <!-- ===== БЛОК 2: ДЕМОНСТРАЦИЯ СВОЙСТВ GRID-ЭЛЕМЕНТОВ ===== -->
+    <h2 class="section-title">🎯 Свойства Grid-элементов</h2>
+    <!--
+        Сетка 4 колонки, 3 строки = 12 ячеек:
+        Строка 1: [order:-1 card] [standard] [row+col-span 2×2...]
+        Строка 2: [col-span 2]   [col-span 2] [↑ продолжение 2×2]
+        Строка 3: [full-width — 1/-1 ----------------------------------------]
+    -->
+    <div class="demo-grid-compact">
+
+        <!-- 1×1, order:-1 — встаёт первым -->
+        <div class="compact-card compact-order">
+            <img src="dvs.jpg" alt="order">
+            <span>order: -1</span>
+            <small>изменение порядка</small>
+        </div>
+
+        <!-- 1×1, обычный -->
+        <div class="compact-card">
+            <img src="lot.jpg" alt="standard">
+            <span>auto-placement</span>
+            <small>стандарт</small>
+        </div>
+
+        <!-- 2×2: grid-row-start/end + grid-column-start/end -->
+        <div class="compact-card compact-2x2">
+            <img src="mustang.jpg" alt="2x2">
+            <span>grid-row: span 2</span>
+            <small>grid-column: span 2</small>
+        </div>
+
+        <!-- 2×1: grid-column: span 2 -->
+        <div class="compact-card compact-col-span">
+            <img src="lot.jpg" alt="col-span">
+            <span>grid-column: span 2</span>
+            <small>ширина 2 колонки</small>
+        </div>
+
+        <!-- 4×1: grid-column: 1/-1 -->
+        <div class="compact-card compact-full">
+            <img src="mustang.jpg" alt="full">
+            <span>grid-column: 1 / -1</span>
+            <small>на всю ширину</small>
+        </div>
+
+    </div>
+
+
+    <!-- ===== БЛОК 3: SHORTHAND grid: ===== -->
+    <h2 class="section-title">⚡ Shorthand: <code>grid: auto-flow / repeat(3, 1fr)</code></h2>
+    <div class="compact-shorthand">
+        <div class="compact-short-item"><img src="dvs.jpg" alt="1"><span>Пейзаж 1</span></div>
+        <div class="compact-short-item"><img src="lot.jpg" alt="2"><span>Пейзаж 2</span></div>
+        <div class="compact-short-item"><img src="mustang.jpg" alt="3"><span>Пейзаж 3</span></div>
+        <div class="compact-short-item"><img src="dvs.jpg" alt="4"><span>Пейзаж 4</span></div>
+        <div class="compact-short-item"><img src="lot.jpg" alt="5"><span>Пейзаж 5</span></div>
+        <div class="compact-short-item"><img src="mustang.jpg" alt="6"><span>Пейзаж 6</span></div>
+    </div>
+
+    <div class="group-info">
+        Выполнил: Печко Алексей Александрович (ПЗТ-43) · CSS Grid · Неоновая тема
+    </div>
+
+</body>
+</html>
