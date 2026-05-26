@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторные работы ПСИИП — Печко А.А.</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: #fff;
+            color: #0a0a0a;
+            min-height: 100vh;
+            padding: 64px 32px 80px;
+        }
+
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 56px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #0a0a0a;
+        }
+
+        .header__eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: 2px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .header__title {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            color: #0a0a0a;
+            margin-bottom: 20px;
+        }
+
+        .header__meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .72rem;
+            color: #888;
+        }
+
+        .lab-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lab-item {
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .lab-item:first-child {
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .lab-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 0;
+            text-decoration: none;
+            color: inherit;
+            transition: padding-left .2s ease;
+        }
+        .lab-link:hover {
+            padding-left: 12px;
+        }
+        .lab-link:hover .lab-num { color: #0a0a0a; }
+        .lab-link:hover .arrow { opacity: 1; }
+
+        .lab-left {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .lab-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .65rem;
+            color: #bbb;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            transition: color .2s;
+            min-width: 52px;
+        }
+
+        .lab-title {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lab-desc {
+            font-size: .78rem;
+            color: #888;
+            font-weight: 300;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+        }
+
+        .arrow {
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity .2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .footer {
+            margin-top: 48px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .65rem;
+            color: #bbb;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        @media (max-width: 560px) {
+            body { padding: 40px 20px 60px; }
+            .lab-desc { display: none; }
+            .lab-left { gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <header class="header">
+        <div class="header__eyebrow">ПСИИП · Практические работы</div>
+        <h1 class="header__title">Лабораторные<br>работы ПСИИП</h1>
+        <div class="header__meta">Печко А.А. &nbsp;·&nbsp; ПЗТ-43 &nbsp;·&nbsp; HTML · CSS · JavaScript</div>
+    </header>
+
+    <nav>
+        <ul class="lab-list">
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B0%201.2.3/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">01–03</span>
+                        <span class="lab-title">Лабораторная работа 1–3</span>
+                        <span class="lab-desc">HTML-разметка, структура документа, теги</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B04/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">04</span>
+                        <span class="lab-title">Лабораторная работа 4</span>
+                        <span class="lab-desc">CSS: селекторы, блочная модель, позиционирование</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B0%205/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">05</span>
+                        <span class="lab-title">Лабораторная работа 5</span>
+                        <span class="lab-desc">Flexbox, Grid, адаптивная вёрстка</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B0%206/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">06</span>
+                        <span class="lab-title">Лабораторная работа 6</span>
+                        <span class="lab-desc">JS: переменные, типы данных, основы</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B07-8/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">07–08</span>
+                        <span class="lab-title">Лабораторная работа 7–8</span>
+                        <span class="lab-desc">Функции, массивы, объекты, DOM</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+            <li class="lab-item">
+                <a class="lab-link" href="%D0%BB%D0%B0%D0%B1%D0%B09/index.html">
+                    <div class="lab-left">
+                        <span class="lab-num">09</span>
+                        <span class="lab-title">Лабораторная работа 9</span>
+                        <span class="lab-desc">Способы внедрения JS, операторы, диалоги</span>
+                    </div>
+                    <span class="arrow">↗</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <footer class="footer">
+        <span>Печко Алексей Александрович · ПЗТ-43</span>
+        <span>ПСИИП · Лабораторные работы</span>
+    </footer>
+
+</div>
+</body>
+</html>
