@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задания 1–3 — JS: способы, операторы, диалоги | Печко А.А.</title>
+
+    <!-- Внешний CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ============================================================
+         СПОСОБ 2: Внутренний скрипт в <head>
+         Объявляем функции до рендеринга — доступны по всей странице.
+    ============================================================ -->
+    <script>
+        'use strict';
+
+        /**
+         * Вычисляет факториал рекурсивно.
+         * Демонстрирует операторы: if + return
+         */
+        function factorial(n) {
+            if (n <= 1) return 1;           // ← if + return
+            return n * factorial(n - 1);    // ← return (рекурсия)
+        }
+
+        /** Запускается по кнопке карточки «Способ 2» */
+        function runHeadScript() {
+            var input  = document.getElementById('head-input');
+            var output = document.getElementById('result-head');
+            var n      = parseInt(input.value, 10);
+
+            if (isNaN(n) || n < 0 || n > 20) {   // ← if
+                output.innerHTML = '⚠️ Введите целое число от 0 до 20';
+                output.classList.add('result--visible');
+                return;                            // ← return (досрочный выход)
+            }
+
+            var result = factorial(n);
+            output.innerHTML =
+                '<span class="res-label">Способ 2 — скрипт в &lt;head&gt;:</span><br>' +
+                'Факториал <strong>' + n + '!</strong> = <strong>' + result + '</strong><br>' +
+                'Функция <code>factorial()</code> объявлена в теге <code>&lt;head&gt;</code>';
+            output.classList.add('result--visible');
+        }
+    </script>
+
+    <!-- Внешний JS (способ 4) подключается в <head> с defer -->
+    <script src="external.js" defer></script>
+</head>
+<body>
+
+    <div style="max-width:900px;margin:0 auto 16px">
+        <a class="back-link" href="index_lr9.html">← Назад к списку заданий</a>
+    </div>
+
+    <!-- Шапка -->
+    <header class="page-header">
+        <div class="page-badge">Практическая работа · Задания 1–3</div>
+        <h1 class="page-title">JS: Способы, Операторы, Диалоги</h1>
+        <p class="page-sub">Печко Алексей Александрович · ПЗТ-43 · Введение в JS</p>
+    </header>
+
+    <main class="wrap">
+
+        <!-- ══════════════════════════════════════════════════════
+             ЗАДАНИЕ 1 — 4 способа внедрения JS в HTML
+        ════════════════════════════════════════════════════════ -->
+        <div class="section-divider">
+            <span class="section-badge">Задание 1</span>
+            <span class="section-title">4 способа внедрения JS в HTML</span>
+        </div>
+
+        <!-- ── Способ 1: inline onclick ── -->
+        <article class="method-card method-card--orange">
+            <div class="method-card__head">
+                <span class="method-num">1</span>
+                <h2 class="method-title">Встроенный обработчик событий</h2>
+                <span class="method-tag">onclick="..."</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    JS-код записывается прямо в атрибут HTML-тега (<code>onclick</code>,
+                    <code>onmouseover</code> и др.). Срабатывает при наступлении события.
+                    Подходит для простых одноразовых действий.
+                </p>
+                <div class="code-block"><pre
+><span class="cm">&lt;!-- Способ 1: inline-обработчик --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">onclick</span>=<span class="val">"var box = document.getElementById('res');
+    box.innerHTML = 'Время: ' + new Date().toLocaleTimeString();
+    box.style.display = 'block';"</span><span class="tag">&gt;</span>
+    Нажми меня
+<span class="tag">&lt;/button&gt;</span></pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--inline"
+                            onclick="
+                                var box = document.getElementById('result-inline');
+                                box.innerHTML = '<span class=\'res-label\'>Способ 1 — inline onclick:</span><br>' +
+                                    '🖱️ Кнопка нажата в <strong>' + new Date().toLocaleTimeString('ru-RU') + '</strong><br>' +
+                                    'JS выполнен прямо из атрибута <code>onclick</code>';
+                                box.classList.add('result--visible');
+                            ">
+                        ▶ Запустить (inline)
+                    </button>
+                </div>
+                <div class="result-box" id="result-inline"></div>
+            </div>
+        </article>
+
+        <!-- ── Способ 2: script в <head> ── -->
+        <article class="method-card method-card--purple">
+            <div class="method-card__head">
+                <span class="method-num">2</span>
+                <h2 class="method-title">Внутренний скрипт в &lt;head&gt;</h2>
+                <span class="method-tag">&lt;script&gt; в head</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    Тег <code>&lt;script&gt;</code> размещается внутри <code>&lt;head&gt;</code>.
+                    Используется для объявления функций, доступных до рендеринга страницы.
+                    Прямой доступ к DOM возможен только после <code>DOMContentLoaded</code>.
+                </p>
+                <div class="code-block"><pre
+><span class="cm">&lt;!-- В &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">factorial</span>(n) {
+    <span class="kw">if</span> (n &lt;= 1) <span class="kw">return</span> 1;
+    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - 1);
+  }
+  <span class="kw">function</span> <span class="fn">runHeadScript</span>() {
+    <span class="kw">var</span> n = parseInt(document.<span class="fn">getElementById</span>(<span class="str">'head-input'</span>).value);
+    document.<span class="fn">getElementById</span>(<span class="str">'result-head'</span>)
+      .innerHTML = n + <span class="str">'! = '</span> + <span class="fn">factorial</span>(n);
+  }
+<span class="tag">&lt;/script&gt;</span></pre></div>
+                <div class="demo-zone">
+                    <input class="demo-input" type="number"
+                           id="head-input" value="7" min="0" max="20"
+                           placeholder="Число (0–20)">
+                    <button class="demo-btn demo-btn--head" onclick="runHeadScript()">
+                        ▶ Вычислить факториал
+                    </button>
+                </div>
+                <div class="result-box" id="result-head"></div>
+            </div>
+        </article>
+
+        <!-- ── Способ 3: script в <body> ── -->
+        <article class="method-card method-card--green">
+            <div class="method-card__head">
+                <span class="method-num">3</span>
+                <h2 class="method-title">Внутренний скрипт в &lt;body&gt;</h2>
+                <span class="method-tag">&lt;script&gt; в body</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    Тег <code>&lt;script&gt;</code> размещается в конце <code>&lt;body&gt;</code>.
+                    Это рекомендуемая практика: DOM уже построен, страница отображается
+                    до выполнения JS, скрипт не блокирует рендеринг.
+                </p>
+                <div class="code-block"><pre
+><span class="cm">&lt;!-- В конце &lt;body&gt; --&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">runBodyScript</span>() {
+    <span class="kw">var</span> nums = [3, 7, 1, 15, 4, 9, 2];
+    <span class="kw">var</span> sum  = nums.<span class="fn">reduce</span>(<span class="kw">function</span>(a,b){ <span class="kw">return</span> a+b; }, 0);
+    <span class="kw">var</span> max  = Math.<span class="fn">max</span>.apply(<span class="kw">null</span>, nums);
+    document.<span class="fn">getElementById</span>(<span class="str">'result-body'</span>)
+      .innerHTML = <span class="str">'Сумма: '</span> + sum + <span class="str">' | Макс: '</span> + max;
+  }
+<span class="tag">&lt;/script&gt;</span></pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--body" onclick="runBodyScript()">
+                        ▶ Анализ массива
+                    </button>
+                </div>
+                <div class="result-box" id="result-body"></div>
+            </div>
+        </article>
+
+        <!-- ── Способ 4: внешний JS-файл ── -->
+        <article class="method-card method-card--pink">
+            <div class="method-card__head">
+                <span class="method-num">4</span>
+                <h2 class="method-title">Внешний JS-файл</h2>
+                <span class="method-tag">src="external.js"</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    JS-код выносится в отдельный файл <code>external.js</code> и подключается
+                    через <code>&lt;script src="..."&gt;</code>. Атрибут <code>defer</code>
+                    откладывает выполнение до полной загрузки DOM. Лучший подход для реальных
+                    проектов: разделение ответственности, кеширование, переиспользование.
+                </p>
+                <div class="code-block"><pre
+><span class="cm">&lt;!-- Подключение в &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"external.js"</span> <span class="atr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- Содержимое external.js --&gt;</span>
+<span class="kw">function</span> <span class="fn">runExternalScript</span>() {
+  <span class="kw">var</span> now = <span class="kw">new</span> <span class="fn">Date</span>();
+  document.<span class="fn">getElementById</span>(<span class="str">'result-external'</span>)
+    .innerHTML = <span class="str">'Время: '</span> + now.<span class="fn">toLocaleTimeString</span>();
+}</pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--ext" onclick="runExternalScript()">
+                        ▶ Запустить внешний скрипт
+                    </button>
+                </div>
+                <div class="result-box" id="result-external"></div>
+            </div>
+        </article>
+
+
+        <!-- ══════════════════════════════════════════════════════
+             ЗАДАНИЕ 2 — Операторы JS
+             if · switch · for · while · do..while · break · continue · return
+        ════════════════════════════════════════════════════════ -->
+        <div class="section-divider">
+            <span class="section-badge">Задание 2</span>
+            <span class="section-title">Операторы JS: if, switch, for, while, do..while, break, continue, return</span>
+        </div>
+
+        <!-- ── if / else if / else + return ── -->
+        <article class="method-card method-card--cyan">
+            <div class="method-card__head">
+                <span class="method-num op-num">А</span>
+                <h2 class="method-title">Оператор <code>if / else if / else</code> + <code>return</code></h2>
+                <span class="method-tag op-tag">Ветвление</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>if</code> проверяет условие и выполняет нужную ветку.
+                    <code>return</code> немедленно прерывает выполнение функции и возвращает значение.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">function</span> <span class="fn">checkGrade</span>(score) {
+  <span class="kw">if</span> (isNaN(score)) <span class="kw">return</span> <span class="str">'Ошибка'</span>;   <span class="cm">// ← return</span>
+
+  <span class="kw">if</span> (score &gt;= 90)      <span class="kw">return</span> <span class="str">'5 — Отлично'</span>;
+  <span class="kw">else if</span> (score &gt;= 75) <span class="kw">return</span> <span class="str">'4 — Хорошо'</span>;
+  <span class="kw">else if</span> (score &gt;= 60) <span class="kw">return</span> <span class="str">'3 — Удовл.'</span>;
+  <span class="kw">else</span>                  <span class="kw">return</span> <span class="str">'2 — Неудовл.'</span>;
+}</pre></div>
+                <div class="demo-zone">
+                    <input class="demo-input" type="number" id="grade-input"
+                           value="85" min="0" max="100" placeholder="Балл (0–100)">
+                    <button class="demo-btn demo-btn--cyan" onclick="checkGrade()">
+                        ▶ Определить оценку
+                    </button>
+                </div>
+                <div class="result-box" id="result-grade"></div>
+            </div>
+        </article>
+
+        <!-- ── switch + break ── -->
+        <article class="method-card method-card--blue">
+            <div class="method-card__head">
+                <span class="method-num op-num">Б</span>
+                <h2 class="method-title">Оператор <code>switch</code> + <code>break</code></h2>
+                <span class="method-tag op-tag">Множественный выбор</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>switch</code> сравнивает значение с несколькими вариантами (<code>case</code>).
+                    <code>break</code> завершает выполнение текущего блока — без него выполнение
+                    «провалится» в следующий <code>case</code>.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">switch</span> (month) {
+  <span class="kw">case</span> 12: <span class="kw">case</span> 1: <span class="kw">case</span> 2:
+    season = <span class="str">'Зима'</span>; <span class="kw">break</span>;   <span class="cm">// ← break</span>
+  <span class="kw">case</span> 3: <span class="kw">case</span> 4: <span class="kw">case</span> 5:
+    season = <span class="str">'Весна'</span>; <span class="kw">break</span>;
+  <span class="kw">case</span> 6: <span class="kw">case</span> 7: <span class="kw">case</span> 8:
+    season = <span class="str">'Лето'</span>; <span class="kw">break</span>;
+  <span class="kw">case</span> 9: <span class="kw">case</span> 10: <span class="kw">case</span> 11:
+    season = <span class="str">'Осень'</span>; <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    season = <span class="str">'Неизвестно'</span>;
+}</pre></div>
+                <div class="demo-zone">
+                    <input class="demo-input" type="number" id="month-input"
+                           value="7" min="1" max="12" placeholder="Месяц (1–12)">
+                    <button class="demo-btn demo-btn--blue" onclick="checkSeason()">
+                        ▶ Определить сезон
+                    </button>
+                </div>
+                <div class="result-box" id="result-switch"></div>
+            </div>
+        </article>
+
+        <!-- ── for + continue + break ── -->
+        <article class="method-card method-card--lime">
+            <div class="method-card__head">
+                <span class="method-num op-num">В</span>
+                <h2 class="method-title">Оператор <code>for</code> + <code>continue</code> + <code>break</code></h2>
+                <span class="method-tag op-tag">Цикл со счётчиком</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>for</code> — цикл с заданным числом итераций.
+                    <code>continue</code> пропускает текущую итерацию и переходит к следующей.
+                    <code>break</code> полностью выходит из цикла при выполнении условия.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">for</span> (<span class="kw">var</span> i = 1; i &lt;= 30; i++) {
+  <span class="kw">if</span> (i % 2 === 0) <span class="kw">continue</span>; <span class="cm">// ← пропускаем чётные</span>
+  collected.<span class="fn">push</span>(i);
+  sum += i;
+  <span class="kw">if</span> (sum &gt;= 50) <span class="kw">break</span>;       <span class="cm">// ← выходим при сумме ≥ 50</span>
+}</pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--lime" onclick="runForLoop()">
+                        ▶ Запустить цикл for
+                    </button>
+                </div>
+                <div class="result-box" id="result-for"></div>
+            </div>
+        </article>
+
+        <!-- ── while + break ── -->
+        <article class="method-card method-card--yellow">
+            <div class="method-card__head">
+                <span class="method-num op-num">Г</span>
+                <h2 class="method-title">Оператор <code>while</code> + <code>break</code></h2>
+                <span class="method-tag op-tag">Цикл с предусловием</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>while</code> проверяет условие <em>перед</em> каждой итерацией.
+                    Здесь строится последовательность Коллаца: цикл продолжается, пока
+                    число не станет равным 1. <code>break</code> используется как защита от
+                    зависания при слишком длинной последовательности.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">var</span> x = n, steps = 0;
+<span class="kw">while</span> (x !== 1) {             <span class="cm">// ← while</span>
+  x = (x % 2 === 0) ? x/2 : 3*x+1;
+  steps++;
+  <span class="kw">if</span> (steps &gt; 300) <span class="kw">break</span>;  <span class="cm">// ← break (защита)</span>
+}</pre></div>
+                <div class="demo-zone">
+                    <input class="demo-input" type="number" id="while-input"
+                           value="27" min="2" max="9999" placeholder="Число ≥ 2">
+                    <button class="demo-btn demo-btn--yellow" onclick="runWhileLoop()">
+                        ▶ Последовательность Коллаца
+                    </button>
+                </div>
+                <div class="result-box" id="result-while"></div>
+            </div>
+        </article>
+
+        <!-- ── do..while ── -->
+        <article class="method-card method-card--rose">
+            <div class="method-card__head">
+                <span class="method-num op-num">Д</span>
+                <h2 class="method-title">Оператор <code>do..while</code></h2>
+                <span class="method-tag op-tag">Цикл с постусловием</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>do..while</code> выполняет тело цикла <em>как минимум один раз</em>,
+                    а условие проверяется <em>после</em> каждой итерации — в отличие от <code>while</code>.
+                    Здесь находим первую степень двойки, превышающую заданное число.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">var</span> power = 1, exp = 0;
+<span class="kw">do</span> {                    <span class="cm">// ← тело выполняется хотя бы раз</span>
+  exp++;
+  power *= 2;
+} <span class="kw">while</span> (power &lt; target); <span class="cm">// ← условие ПОСЛЕ тела</span>
+<span class="cm">// Результат: 2^exp ≥ target</span></pre></div>
+                <div class="demo-zone">
+                    <input class="demo-input" type="number" id="dowhile-input"
+                           value="1000" min="1" placeholder="Целевое число">
+                    <button class="demo-btn demo-btn--rose" onclick="runDoWhile()">
+                        ▶ Найти степень двойки
+                    </button>
+                </div>
+                <div class="result-box" id="result-dowhile"></div>
+            </div>
+        </article>
+
+
+        <!-- ══════════════════════════════════════════════════════
+             ЗАДАНИЕ 3 — Диалоговые окна
+             alert() · confirm() · prompt()
+        ════════════════════════════════════════════════════════ -->
+        <div class="section-divider">
+            <span class="section-badge">Задание 3</span>
+            <span class="section-title">Диалоговые окна: alert(), confirm(), prompt()</span>
+        </div>
+
+        <!-- ── alert() ── -->
+        <article class="method-card method-card--orange">
+            <div class="method-card__head">
+                <span class="method-num dlg-num">1</span>
+                <h2 class="method-title">Метод <code>window.alert()</code></h2>
+                <span class="method-tag dlg-tag">Сообщение</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>alert(сообщение)</code> показывает модальное окно с текстом и единственной
+                    кнопкой «OK». Используется для уведомлений пользователя. Выполнение скрипта
+                    приостанавливается до закрытия окна. Возвращает <code>undefined</code>.
+                </p>
+                <div class="code-block"><pre
+><span class="cm">// window можно не указывать явно</span>
+<span class="fn">alert</span>(<span class="str">'Привет!\nЭто окно alert().\nДокумент: '</span> + document.title);
+<span class="cm">// После закрытия — продолжаем работу</span></pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--inline" onclick="showAlert()">
+                        🔔 Показать alert()
+                    </button>
+                </div>
+                <div class="result-box" id="result-alert"></div>
+            </div>
+        </article>
+
+        <!-- ── confirm() ── -->
+        <article class="method-card method-card--purple">
+            <div class="method-card__head">
+                <span class="method-num dlg-num">2</span>
+                <h2 class="method-title">Метод <code>window.confirm()</code></h2>
+                <span class="method-tag dlg-tag">Подтверждение</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>confirm(вопрос)</code> показывает модальное окно с двумя кнопками:
+                    «OK» и «Отмена». Возвращает <code>true</code> при нажатии OK
+                    и <code>false</code> при нажатии Отмена или закрытии окна.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">var</span> answer = <span class="fn">confirm</span>(<span class="str">'Вы хотите видеть текущее время?'</span>);
+<span class="kw">if</span> (answer) {
+  <span class="cm">// пользователь нажал OK → true</span>
+  console.<span class="fn">log</span>(<span class="str">'Время: '</span> + <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">toLocaleTimeString</span>());
+} <span class="kw">else</span> {
+  <span class="cm">// пользователь нажал Отмена → false</span>
+  console.<span class="fn">log</span>(<span class="str">'Отказано.'</span>);
+}</pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--head" onclick="showConfirm()">
+                        ❓ Показать confirm()
+                    </button>
+                </div>
+                <div class="result-box" id="result-confirm"></div>
+            </div>
+        </article>
+
+        <!-- ── prompt() ── -->
+        <article class="method-card method-card--green">
+            <div class="method-card__head">
+                <span class="method-num dlg-num">3</span>
+                <h2 class="method-title">Метод <code>window.prompt()</code></h2>
+                <span class="method-tag dlg-tag">Ввод данных</span>
+            </div>
+            <div class="method-card__body">
+                <p class="method-desc">
+                    <code>prompt(вопрос, значение_по_умолчанию)</code> показывает окно
+                    с полем ввода. Возвращает введённую строку при нажатии OK или
+                    <code>null</code> при нажатии Отмена.
+                </p>
+                <div class="code-block"><pre
+><span class="kw">var</span> name = <span class="fn">prompt</span>(<span class="str">'Введите ваше имя:'</span>, <span class="str">'Иван'</span>);
+
+<span class="kw">if</span> (name === <span class="kw">null</span>) {
+  <span class="cm">// ← нажата кнопка «Отмена»</span>
+  console.<span class="fn">log</span>(<span class="str">'Ввод отменён'</span>);
+} <span class="kw">else if</span> (name.<span class="fn">trim</span>() === <span class="str">''</span>) {
+  <span class="cm">// ← OK нажата, но строка пустая</span>
+  console.<span class="fn">log</span>(<span class="str">'Имя не введено'</span>);
+} <span class="kw">else</span> {
+  console.<span class="fn">log</span>(<span class="str">'Привет, '</span> + name + <span class="str">'!'</span>);
+}</pre></div>
+                <div class="demo-zone">
+                    <button class="demo-btn demo-btn--body" onclick="showPrompt()">
+                        ✏️ Показать prompt()
+                    </button>
+                </div>
+                <div class="result-box" id="result-prompt"></div>
+            </div>
+        </article>
+
+    </main><!-- /wrap -->
+
+
+    <!-- ============================================================
+         СПОСОБ 3: Внутренний скрипт в <body>
+         Все функции задания 2 и 3 объявлены здесь.
+         DOM уже полностью построен — прямой доступ к элементам.
+    ============================================================ -->
+    <script>
+        'use strict';
+
+        /* ─────────────────────────────────────────────
+           ЗАДАНИЕ 1 — Способ 3
+        ───────────────────────────────────────────── */
+
+        /** Анализирует массив чисел: сумма, максимум, среднее */
+        function runBodyScript() {
+            var nums   = [3, 7, 1, 15, 4, 9, 2, 11, 6];
+            var output = document.getElementById('result-body');
+
+            var sum = nums.reduce(function (acc, val) { return acc + val; }, 0);
+            var max = Math.max.apply(null, nums);
+            var avg = (sum / nums.length).toFixed(2);
+
+            output.innerHTML =
+                '<span class="res-label">Способ 3 — скрипт в &lt;body&gt;:</span><br>' +
+                '📊 Массив: <strong>[' + nums.join(', ') + ']</strong><br>' +
+                '∑ Сумма: <strong>' + sum + '</strong> &nbsp;|&nbsp; ' +
+                'Max: <strong>' + max + '</strong> &nbsp;|&nbsp; ' +
+                'Среднее: <strong>' + avg + '</strong><br>' +
+                'Функция <code>runBodyScript()</code> объявлена в теге <code>&lt;body&gt;</code>';
+            output.classList.add('result--visible');
+        }
+
+        /* ─────────────────────────────────────────────
+           ЗАДАНИЕ 2 — Операторы JS
+        ───────────────────────────────────────────── */
+
+        /**
+         * Оператор if / else if / else + return
+         * Калькулятор оценки по баллу (0–100)
+         */
+        function checkGrade() {
+            var score  = parseInt(document.getElementById('grade-input').value, 10);
+            var output = document.getElementById('result-grade');
+
+            // if + return — досрочный выход при ошибке ввода
+            if (isNaN(score) || score < 0 || score > 100) {
+                output.innerHTML = '⚠️ Введите число от 0 до 100';
+                output.classList.add('result--visible');
+                return;                        // ← оператор return
+            }
+
+            var grade, color;
+            // if / else if / else — цепочка условий
+            if (score >= 90) {
+                grade = '5 — Отлично 🏆';   color = '#6ee7b7';
+            } else if (score >= 75) {
+                grade = '4 — Хорошо 👍';    color = '#c084fc';
+            } else if (score >= 60) {
+                grade = '3 — Удовл. 😐';    color = '#fbbf24';
+            } else {
+                grade = '2 — Неудовл. ❌';  color = '#ff6b9d';
+            }
+
+            output.innerHTML =
+                '<span class="res-label">if / else if / else + return:</span><br>' +
+                'Балл: <strong>' + score + '</strong> → ' +
+                'Оценка: <strong style="color:' + color + '">' + grade + '</strong>';
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * Оператор switch + break
+         * Определяет сезон по номеру месяца
+         */
+        function checkSeason() {
+            var month  = parseInt(document.getElementById('month-input').value, 10);
+            var output = document.getElementById('result-switch');
+
+            if (isNaN(month) || month < 1 || month > 12) {
+                output.innerHTML = '⚠️ Введите номер месяца от 1 до 12';
+                output.classList.add('result--visible');
+                return;
+            }
+
+            var season, emoji, period;
+            switch (month) {                           // ← switch
+                case 12: case 1: case 2:
+                    season = 'Зима'; emoji = '❄️';
+                    period = 'декабрь – январь – февраль';
+                    break;                             // ← break
+                case 3: case 4: case 5:
+                    season = 'Весна'; emoji = '🌸';
+                    period = 'март – апрель – май';
+                    break;
+                case 6: case 7: case 8:
+                    season = 'Лето'; emoji = '☀️';
+                    period = 'июнь – июль – август';
+                    break;
+                case 9: case 10: case 11:
+                    season = 'Осень'; emoji = '🍂';
+                    period = 'сентябрь – октябрь – ноябрь';
+                    break;
+                default:
+                    season = 'Неизвестно'; emoji = '❓'; period = '';
+            }
+
+            output.innerHTML =
+                '<span class="res-label">switch + break:</span><br>' +
+                emoji + ' Месяц <strong>' + month + '</strong> → ' +
+                '<strong>' + season + '</strong><br>' +
+                '<small style="color:var(--dim)">(' + period + ')</small>';
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * Операторы for + continue + break
+         * Собирает нечётные числа (continue пропускает чётные),
+         * останавливается когда сумма достигнет 50 (break).
+         */
+        function runForLoop() {
+            var output    = document.getElementById('result-for');
+            var collected = [];
+            var sum       = 0;
+
+            for (var i = 1; i <= 30; i++) {   // ← for
+                if (i % 2 === 0) continue;    // ← continue: пропускаем чётные
+                collected.push(i);
+                sum += i;
+                if (sum >= 50) break;         // ← break: выходим при сумме ≥ 50
+            }
+
+            output.innerHTML =
+                '<span class="res-label">for + continue + break:</span><br>' +
+                'Нечётные числа (чётные пропущены через <code>continue</code>,' +
+                ' цикл прерван через <code>break</code> при сумме ≥ 50):<br>' +
+                '<strong>[' + collected.join(', ') + ']</strong><br>' +
+                'Σ = <strong>' + sum + '</strong>, элементов: <strong>' + collected.length + '</strong>';
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * Операторы while + break
+         * Строит последовательность Коллаца: while повторяет пока x ≠ 1,
+         * break защищает от слишком длинных последовательностей.
+         */
+        function runWhileLoop() {
+            var n      = parseInt(document.getElementById('while-input').value, 10);
+            var output = document.getElementById('result-while');
+
+            if (isNaN(n) || n < 2) {
+                output.innerHTML = '⚠️ Введите число ≥ 2';
+                output.classList.add('result--visible');
+                return;
+            }
+
+            var seq   = [n];
+            var x     = n;
+            var steps = 0;
+
+            while (x !== 1) {               // ← while
+                x = (x % 2 === 0) ? x / 2 : 3 * x + 1;
+                seq.push(x);
+                steps++;
+                if (steps > 300) break;     // ← break (защита от переполнения)
+            }
+
+            var display = seq.length <= 14
+                ? seq.join(' → ')
+                : seq.slice(0, 10).join(' → ') + ' … → ' + seq[seq.length - 1];
+
+            output.innerHTML =
+                '<span class="res-label">while + break:</span><br>' +
+                'Последовательность Коллаца для <strong>' + n + '</strong>:<br>' +
+                '<strong>' + display + '</strong><br>' +
+                'Шагов до 1: <strong>' + steps + '</strong>';
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * Оператор do..while
+         * Находит наименьшую степень двойки, не меньше заданного числа.
+         * Тело цикла выполняется хотя бы один раз независимо от условия.
+         */
+        function runDoWhile() {
+            var target = parseInt(document.getElementById('dowhile-input').value, 10);
+            var output = document.getElementById('result-dowhile');
+
+            if (isNaN(target) || target < 1) {
+                output.innerHTML = '⚠️ Введите натуральное число';
+                output.classList.add('result--visible');
+                return;
+            }
+
+            var power = 1;
+            var exp   = 0;
+
+            do {                          // ← do (тело выполняется минимум раз)
+                exp++;
+                power *= 2;
+            } while (power < target);    // ← while (условие ПОСЛЕ тела)
+
+            output.innerHTML =
+                '<span class="res-label">do..while:</span><br>' +
+                'Первая степень двойки ≥ <strong>' + target + '</strong>:<br>' +
+                '2<sup>' + exp + '</sup> = <strong>' + power + '</strong><br>' +
+                '<small style="color:var(--dim)">Тело цикла выполнилось <strong style="color:var(--green)">' +
+                exp + '</strong> раз(а)</small>';
+            output.classList.add('result--visible');
+        }
+
+        /* ─────────────────────────────────────────────
+           ЗАДАНИЕ 3 — Диалоговые окна
+        ───────────────────────────────────────────── */
+
+        /**
+         * window.alert() — модальное информационное окно.
+         * Возвращает undefined. Блокирует скрипт до нажатия «OK».
+         */
+        function showAlert() {
+            // alert() — синоним window.alert()
+            alert(
+                'Привет! Это окно alert().\n\n' +
+                'Метод объекта window показывает информационное сообщение.\n' +
+                'Страница: ' + document.title + '\n' +
+                'Время:    ' + new Date().toLocaleTimeString('ru-RU')
+            );
+
+            var output = document.getElementById('result-alert');
+            output.innerHTML =
+                '<span class="res-label">alert():</span><br>' +
+                '✅ Окно <code>alert()</code> было показано.<br>' +
+                'Возвращаемое значение: <strong>undefined</strong>';
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * window.confirm() — окно с кнопками OK и Отмена.
+         * Возвращает true (OK) или false (Отмена / закрытие).
+         */
+        function showConfirm() {
+            var answer = confirm('Вы хотите узнать текущее время?\n\nOK — да, Отмена — нет.');
+
+            var output = document.getElementById('result-confirm');
+            if (answer) {                             // ← true — нажато OK
+                var now = new Date();
+                output.innerHTML =
+                    '<span class="res-label">confirm() → <strong>true</strong>:</span><br>' +
+                    '✅ Вы нажали <strong>OK</strong>.<br>' +
+                    'Текущее время: <strong>' + now.toLocaleTimeString('ru-RU') + '</strong>';
+            } else {                                  // ← false — нажата Отмена
+                output.innerHTML =
+                    '<span class="res-label">confirm() → <strong>false</strong>:</span><br>' +
+                    '❌ Вы нажали <strong>Отмена</strong>. Время скрыто.';
+            }
+            output.classList.add('result--visible');
+        }
+
+        /**
+         * window.prompt() — окно с полем ввода.
+         * Возвращает строку (OK) или null (Отмена).
+         */
+        function showPrompt() {
+            var name = prompt('Как вас зовут?', 'Иван');
+
+            var output = document.getElementById('result-prompt');
+            if (name === null) {                     // ← null — нажата Отмена
+                output.innerHTML =
+                    '<span class="res-label">prompt() → <strong>null</strong>:</span><br>' +
+                    '❌ Пользователь нажал <strong>Отмена</strong>.';
+            } else if (name.trim() === '') {         // ← пустая строка
+                output.innerHTML =
+                    '<span class="res-label">prompt() → <strong>""</strong>:</span><br>' +
+                    '⚠️ Имя не введено (пустая строка).';
+            } else {                                 // ← нормальный ввод
+                var hour     = new Date().getHours();
+                var greeting = hour < 12 ? 'Доброе утро' : hour < 18 ? 'Добрый день' : 'Добрый вечер';
+                output.innerHTML =
+                    '<span class="res-label">prompt() → <strong>"' + name + '"</strong>:</span><br>' +
+                    '👋 <strong>' + greeting + ', ' + name + '!</strong><br>' +
+                    'Рады видеть вас на странице.';
+            }
+            output.classList.add('result--visible');
+        }
+
+    </script>
+
+</body>
+</html>
