@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Фан-сайт культового фильма Бойцовский клуб">
+    <meta name="keywords" content="Бойцовский клуб, Fight Club, фильм, Питт, Нортон">
+    <meta name="author" content="Fan Site">
+    <title>Фан-сайт: Бойцовский клуб</title>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║  ЛР №4 — СПОСОБЫ ПОДКЛЮЧЕНИЯ CSS                                ║
+    ║  1. Внешний файл       →  <link rel="stylesheet" href="...">    ║
+    ║  2. Импортирование     →  @import внутри <style>                ║
+    ║  3. Внутренняя таблица →  <style> в <head>                      ║
+    ║  4. Встроенный стиль   →  style="..." на конкретных элементах   ║
+    ╚══════════════════════════════════════════════════════════════════╝
+    -->
+
+    <!-- СПОСОБ 1: Внешний файл стилей -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- СПОСОБ 2: Внутренняя таблица стилей + @import (способ 3 внутри) -->
+    <style>
+        /* СПОСОБ 3: Импортирование — подключение дополнительного CSS через @import */
+        /* В реальном проекте импортируется отдельный файл; здесь — Google Fonts напрямую */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Share+Tech+Mono&display=swap');
+
+        /*
+        ════════════════════════════════════════════════════════
+          ВНУТРЕННЯЯ ТАБЛИЦА СТИЛЕЙ
+          Здесь переопределяем и дополняем стили из styles.css.
+          Демонстрация КАСКАДНОСТИ и ПРИОРИТЕТОВ:
+            inline > <style> > <link> > браузерные стили
+        ════════════════════════════════════════════════════════
+        */
+
+        /* ── КАСКАДНОСТЬ: более специфичное правило побеждает ── */
+        /* Это правило (внутренний стиль) перебивает цвет ссылок из styles.css
+           для конкретного блока #links */
+        #links h3 {
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        /* Псевдоэлемент ::selection — выделение текста */
+        ::selection {
+            background: var(--red);
+            color: #fff;
+        }
+
+        /* Переменные + calc() для отступов секций */
+        #about {
+            /* calc() — вычисляемые единицы */
+            padding: calc(1rem + 0.5vw) calc(1.5rem + 1vw);
+        }
+
+        /* Дочерние селекторы + nth-of-type */
+        #about > p:first-of-type {
+            font-size: 1.1rem;
+            color: var(--light);
+        }
+
+        /* Стилизация таблицы фактов — чередование цветов ячеек первой колонки */
+        #facts td:first-child {
+            color: var(--accent);
+            font-weight: bold;
+            font-family: var(--font-title);
+            letter-spacing: 0.05em;
+        }
+
+        /* Соседний селектор h3 + p (следующий абзац после подзаголовка) */
+        section h3 + p {
+            color: var(--light);
+            font-style: italic;
+        }
+
+        /* Правило !important — максимальный приоритет (демонстрация) */
+        .important-rule {
+            color: #ff6b6b !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+            text-shadow: 0 0 8px rgba(255,107,107,0.4) !important;
+        }
+
+        /* Атрибутный селектор [data-role] — для специальных блоков */
+        [data-role="spoiler"] {
+            background: var(--dark3);
+            border: 1px dashed var(--red-dark);
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            user-select: none;
+            color: var(--gray);
+            font-style: italic;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        [data-role="spoiler"]:hover {
+            color: var(--text);
+            background: rgba(192,57,43,0.1);
+        }
+
+        /* Псевдокласс :not() — все секции кроме #about */
+        section:not(#about) h2::before {
+            content: '// ';
+            color: var(--red);
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        /* Псевдокласс :focus-within — подсветка формы при активном вводе */
+        .form-group:focus-within > label {
+            color: var(--accent);
+        }
+
+        /* Анимация появления карточек галереи */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-item {
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.15s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Трансформации для заголовка таблицы при ховере */
+        th:hover {
+            background-color: var(--red);
+            transform: scale(1.01);
+            cursor: default;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        /* Стили для ol (нумерованный список) */
+        ol.character-list {
+            list-style: none;
+            counter-reset: fc-counter;
+        }
+
+        ol.character-list > li {
+            counter-increment: fc-counter;
+        }
+
+        ol.character-list > li::before {
+            content: counter(fc-counter) '. ';
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-weight: bold;
+        }
+
+        /* Кастомный маркер для ul в разделе ссылок */
+        #links .character-list > li::before {
+            content: '→ ';
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Тег-якорь для кнопки "Наверх" -->
+    <a id="top"></a>
+
+    <header>
+        <h1>FAN-CLUB: БОЙЦОВСКИЙ КЛУБ</h1>
+        <!-- СПОСОБ 4: Встроенный (inline) стиль — style="..." -->
+        <p style="font-family: 'Share Tech Mono', monospace; color: #c0392b; letter-spacing: 0.15em; font-size: 1.05em;">
+            «Первое правило бойцовского клуба: никому не рассказывать о бойцовском клубе»
+        </p>
+    </header>
+
+    <nav>
+        <a href="#about">О фильме</a> |
+        <a href="#characters">Персонажи</a> |
+        <a href="#quotes">Цитаты</a> |
+        <a href="#media">Медиа</a> |
+        <a href="#anketa">Анкета</a> |
+        <a href="#auth">Вход/Регистрация</a> |
+        <a href="#facts">Факты</a> |
+        <a href="#links">Ссылки</a>
+    </nav>
+
+    <main>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 1: О фильме
+        ════════════════════════════════════════════ -->
+        <section id="about">
+            <h2>О фильме</h2>
+
+            <p>
+                <strong>«Бойцовский клуб»</strong>
+                (англ. <u>Fight Club</u>) — культовый фильм 1999 года режиссёра
+                <em>Дэвида Финчера</em> по одноимённому роману <em>Чака Паланика</em>.
+            </p>
+            <p>
+                Главные роли исполнили: <strong>Брэд Питт</strong>,
+                <strong>Эдвард Нортон</strong> и <strong>Хелена Бонем Картер</strong>.
+            </p>
+            <p>
+                <mark>Интересный факт:</mark>
+                Фильм провалился в прокате, но стал
+                <del>неудачным экспериментом</del>
+                <ins>культовой классикой</ins> на видеоносителях.
+            </p>
+            <p>
+                Химическая формула мыла: C<sub>17</sub>H<sub>35</sub>COONa
+                &copy; &reg; &trade;
+            </p>
+
+            <!-- СПОСОБ 4: inline стиль для демонстрации встроенного способа -->
+            <p style="font-size: 0.85rem; color: #888; border-left: 2px solid #555; padding-left: 10px; margin-top: 12px;">
+                <small>&#9888; Внимание: правила бойцовского клуба запрещают упоминать бойцовский клуб</small>
+            </p>
+
+            <!-- Блок спойлера — атрибутный селектор [data-role] -->
+            <p data-role="spoiler" title="Наведи для подсказки">
+                🔴 Спойлер (наведи): Тайлер Дёрден и Рассказчик — одно и то же лицо.
+            </p>
+
+            <!-- Демонстрация класса .important-rule и правила !important -->
+            <p class="important-rule">
+                ⚡ Это правило использует !important — максимальный приоритет каскада CSS.
+            </p>
+
+            <!-- Аббревиатура с title — атрибутный селектор abbr[title] -->
+            <p>
+                Фильм получил рейтинг
+                <abbr title="Motion Picture Association — система кинорейтингов">MPA</abbr>:
+                <code>R</code> (ограниченный доступ).
+            </p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 2: Персонажи
+        ════════════════════════════════════════════ -->
+        <section id="characters">
+            <h2>Главные персонажи</h2>
+
+            <h3>Основные герои:</h3>
+            <ul class="character-list">
+                <li><b>Рассказчик (Джек)</b> — <i>Эдвард Нортон</i>
+                    <ul>
+                        <li>Страдает бессонницей</li>
+                        <li>Создаёт бойцовский клуб</li>
+                        <li>Работает в автомобильной компании</li>
+                    </ul>
+                </li>
+                <li><b>Тайлер Дёрден</b> — <i>Брэд Питт</i>
+                    <ul>
+                        <li>Мыловар и бунтарь</li>
+                        <li>Философ-анархист</li>
+                        <li>Создатель проекта «Разгром»</li>
+                    </ul>
+                </li>
+                <li><b>Марла Сингер</b> — <i>Хелена Бонем Картер</i>
+                    <ul>
+                        <li>Посещает группы поддержки</li>
+                        <li>Циничная и саморазрушительная</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Второстепенные персонажи:</h3>
+            <ol class="character-list">
+                <li><b>Боб</b> — бывший культурист</li>
+                <li><b>Ангел</b> — член проекта «Разгром»</li>
+                <li><b>Инспектор</b> — начальник рассказчика</li>
+            </ol>
+
+            <h3>Характеристики персонажей:</h3>
+            <dl class="character-list">
+                <dt>Рассказчик</dt>
+                <dd>Бессонница, материализм, раздвоение личности</dd>
+                <dt>Тайлер</dt>
+                <dd>Харизма, бунтарство, анархизм, философия</dd>
+                <dt>Марла</dt>
+                <dd>Цинизм, зависимость, одиночество, сарказм</dd>
+            </dl>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 3: Цитаты
+        ════════════════════════════════════════════ -->
+        <section id="quotes">
+            <h2>Знаменитые цитаты</h2>
+
+            <div class="quote-block">
+                <p>«Первое правило бойцовского клуба: никому не рассказывать о бойцовском клубе.»</p>
+                <p>«Второе правило бойцовского клуба: НИКОМУ не рассказывать о бойцовском клубе!»</p>
+                <p>«Третье правило: если кто-то говорит "стоп" или теряет сознание — бой останавливается.»</p>
+                <p>«Четвёртое правило: в бою участвуют только двое.»</p>
+            </div>
+
+            <div class="quote-block">
+                <p>«Ты — это не твоя работа, ты — это не то, сколько денег у тебя в банке.»</p>
+                <p>«Это твоя жизнь, и она заканчивается с каждой минутой.»</p>
+                <p>«Лишь потеряв всё, мы обретаем свободу.»</p>
+            </div>
+
+            <div class="quote-block">
+                <p>«Реклама заставляет нас гнаться за машинами и шмотками.»</p>
+                <p><q>Мы — потребители, рождённые для того, чтобы потреблять.</q></p>
+            </div>
+
+            <p><cite>— Цитаты из фильма «Бойцовский клуб» (1999)</cite></p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 4: Медиа-галерея
+        ════════════════════════════════════════════ -->
+        <section id="media">
+            <h2>Медиа-галерея</h2>
+
+            <div class="media-container">
+                <h3>Кадры из фильма</h3>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="media/fight-club-scene-1.jpg"
+                             alt="Тайлер и Рассказчик в баре"
+                             width="600" height="300"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300/c0392b/ffffff?text=Scene+1'">
+                        <!-- СПОСОБ 4: inline style для тени-акцента -->
+                        <p style="color: #c0392b; font-weight: bold;">Тайлер Дёрден и Рассказчик в баре</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="media/fight-club-basement.jpg"
+                             alt="Первый бой в подвале"
+                             width="400" height="200"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x200/333333/ffffff?text=Scene+2'">
+                        <p><small>Первый бой в подвале бара</small></p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="media/fight-club-soap.jpg"
+                             alt="Тайлер с мылом"
+                             width="400" height="200"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=Scene+3'">
+                        <p><small>Тайлер и его фирменное мыло</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media-container">
+                <h3>Саундтрек</h3>
+                <audio controls>
+                    <source src="media/fight-club-soundtrack.mp3" type="audio/mpeg">
+                    <source src="media/fight-club-soundtrack.ogg" type="audio/ogg">
+                    Ваш браузер не поддерживает аудио.
+                </audio>
+                <p><small>Pixies — "Where Is My Mind" (саундтрек к фильму)</small></p>
+            </div>
+
+            <div class="media-container">
+                <h3>Локальное видео</h3>
+                <video controls width="560" height="315">
+                    <source src="media/fight-club-trailer.mp4" type="video/mp4">
+                    <source src="media/fight-club-trailer.webm" type="video/webm">
+                    Ваш браузер не поддерживает видео.
+                </video>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 5: Анкета фаната
+        ════════════════════════════════════════════ -->
+        <section id="anketa">
+            <h2>Анкета фаната</h2>
+            <div class="form-container">
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="name">Ваше имя:</label>
+                        <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Возраст:</label>
+                        <input type="number" id="age" name="age" min="1" max="100" placeholder="Ваш возраст">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="favorite-character">Любимый персонаж:</label>
+                        <select id="favorite-character" name="favorite-character">
+                            <optgroup label="Главные герои">
+                                <option value="tyler">Тайлер Дёрден</option>
+                                <option value="narrator">Рассказчик (Джек)</option>
+                                <option value="marla">Марла Сингер</option>
+                            </optgroup>
+                            <optgroup label="Второстепенные">
+                                <option value="bob">Боб</option>
+                                <option value="angel">Ангел</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Как часто пересматриваете фильм?</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="watch-frequency" value="often" checked> Часто</label>
+                            <label><input type="radio" name="watch-frequency" value="sometimes"> Иногда</label>
+                            <label><input type="radio" name="watch-frequency" value="rarely"> Редко</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Что вам нравится в фильме?</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="likes[]" value="plot"> Сюжет</label>
+                            <label><input type="checkbox" name="likes[]" value="actors"> Актёры</label>
+                            <label><input type="checkbox" name="likes[]" value="philosophy"> Философия</label>
+                            <label><input type="checkbox" name="likes[]" value="soundtrack"> Саундтрек</label>
+                            <label><input type="checkbox" name="likes[]" value="direction"> Режиссура</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="watch-date">Когда последний раз смотрели?</label>
+                        <input type="date" id="watch-date" name="watch-date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Оцените фильм (1–10):</label>
+                        <input type="range" id="rating" name="rating" min="1" max="10" value="10">
+                        <output for="rating">10</output>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment">Ваш комментарий:</label>
+                        <textarea id="comment" name="comment" placeholder="Напишите ваше мнение о фильме..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Отправить анкету</button>
+                        <button type="reset" class="reset-btn">Очистить</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ: Вход и регистрация
+        ════════════════════════════════════════════ -->
+        <section id="auth">
+            <h2>Вход и регистрация</h2>
+
+            <div class="forms-row">
+                <!-- Форма регистрации -->
+                <div class="register-container">
+                    <h3>Регистрация</h3>
+                    <form action="#" method="post" oninput="checkPasswordStrength()">
+                        <div class="form-group">
+                            <label for="reg-name">Имя пользователя:</label>
+                            <input type="text" id="reg-name" name="reg-name" placeholder="Придумайте имя" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email">Email:</label>
+                            <input type="email" id="reg-email" name="reg-email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Пароль:</label>
+                            <input type="password" id="reg-password" name="reg-password"
+                                   placeholder="Придумайте пароль" required
+                                   onkeyup="checkPasswordStrength()">
+                            <div class="password-strength">
+                                <div id="password-strength-bar" class="password-strength-bar"></div>
+                            </div>
+                            <small id="password-strength-text">Введите пароль</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-confirm-password">Подтвердите пароль:</label>
+                            <input type="password" id="reg-confirm-password"
+                                   name="reg-confirm-password" placeholder="Повторите пароль" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-birthdate">Дата рождения:</label>
+                            <input type="date" id="reg-birthdate" name="reg-birthdate">
+                        </div>
+                        <div class="form-group">
+                            <label>Пол:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="gender" value="male"> Мужской</label>
+                                <label><input type="radio" name="gender" value="female"> Женский</label>
+                                <label><input type="radio" name="gender" value="other"> Другой</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="agree-rules" required>
+                                Я согласен с <a href="#">правилами клуба</a>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="subscribe">
+                                Подписаться на новости о фильме
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="register-btn">Зарегистрироваться</button>
+                            <button type="reset" class="reset-btn">Очистить</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Форма авторизации -->
+                <div class="login-container">
+                    <h3>Вход на сайт</h3>
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <label for="login-email">Email или логин:</label>
+                            <input type="text" id="login-email" name="login-email"
+                                   placeholder="Введите email или логин" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="login-password"
+                                   placeholder="Введите пароль" required>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="remember"> Запомнить меня</label>
+                        </div>
+                        <div class="form-group">
+                            <!-- Атрибутный селектор [href="#"] — особый стиль -->
+                            <a href="#" style="color: var(--accent); font-size: 0.9rem;">Забыли пароль?</a>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="login-btn">Войти</button>
+                            <button type="reset" class="reset-btn">Очистить</button>
+                        </div>
+                    </form>
+
+                    <hr>
+                    <h4 style="font-family: var(--font-title); color: var(--light); margin-bottom: 10px;">Быстрый вход:</h4>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button style="background-color: #3b5998; color: white; border: none; padding: 10px 18px; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">f</button>
+                        <button style="background-color: #1da1f2; color: white; border: none; padding: 10px 18px; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">𝕏</button>
+                        <button style="background-color: #db4437; color: white; border: none; padding: 10px 18px; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">G</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 6: Таблица фактов
+        ════════════════════════════════════════════ -->
+        <section id="facts">
+            <h2>Таблица фактов о фильме</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Основная информация</th>
+                        <th>Детали</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="5"><b>Характеристики</b></td>
+                        <td>Год выпуска</td>
+                        <td>1999</td>
+                    </tr>
+                    <tr>
+                        <td>Режиссёр</td>
+                        <td>Дэвид Финчер</td>
+                    </tr>
+                    <tr>
+                        <td>Бюджет</td>
+                        <td>$63 млн</td>
+                    </tr>
+                    <tr>
+                        <td>Сборы в мире</td>
+                        <td>$101 млн</td>
+                    </tr>
+                    <tr>
+                        <td>Хронометраж</td>
+                        <td>139 минут</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><b>Награды</b></td>
+                        <td>Премия MTV</td>
+                        <td>Лучшая драка (2000)</td>
+                    </tr>
+                    <tr>
+                        <td>Премия «Сатурн»</td>
+                        <td>Лучший DVD-релиз (2001)</td>
+                    </tr>
+                    <tr>
+                        <td>Online Film Critics</td>
+                        <td>Лучший DVD (2001)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"
+                            style="text-align: center; background-color: rgba(192,57,43,0.15); font-style: italic; color: var(--accent);">
+                            «Работа, которую ты ненавидишь, — это каторга»
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             СЕКЦИЯ 7: Ссылки
+        ════════════════════════════════════════════ -->
+        <section id="links">
+            <h2>Полезные ссылки</h2>
+
+            <h3>Внутренние ссылки:</h3>
+            <ul class="character-list">
+                <li><a href="#about">Описание фильма</a></li>
+                <li><a href="#characters">Список персонажей</a></li>
+                <li><a href="#quotes">Лучшие цитаты</a></li>
+                <li><a href="#media">Медиа-галерея</a></li>
+                <li><a href="#anketa">Анкета фаната</a></li>
+                <li><a href="#auth">Вход / Регистрация</a></li>
+                <li><a href="#facts">Факты о фильме</a></li>
+            </ul>
+
+            <h3>Внешние ресурсы:</h3>
+            <ul class="character-list">
+                <li><a href="https://www.imdb.com/title/tt0137523/" target="_blank">Страница на IMDB</a></li>
+                <li><a href="https://ru.wikipedia.org/wiki/Бойцовский_клуб" target="_blank">Статья в Википедии</a></li>
+                <li><a href="https://www.youtube.com/results?search_query=fight+club" target="_blank">YouTube: Fight Club</a></li>
+                <li><a href="https://www.rottentomatoes.com/m/fight_club" target="_blank">Rotten Tomatoes</a></li>
+            </ul>
+
+            <h3>Контакты:</h3>
+            <ul class="character-list">
+                <li>Свяжитесь с нами: <a href="mailto:fan@fightclub.ru">fan@fightclub.ru</a></li>
+                <li>Наш Telegram: <a href="https://t.me/fightclubfan" target="_blank">@fightclubfan</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Фан-сайт «Бойцовский клуб». Все права защищены &reg; &trade;</p>
+        <p>Сайт создан фанатами для фанатов | <a href="#top">⬆ Вернуться наверх</a></p>
+        <p><small>Первое правило фан-сайта: не рассказывать о фан-сайте!</small></p>
+    </footer>
+
+    <script>
+        // Ползунок рейтинга
+        const rating = document.getElementById('rating');
+        if (rating) {
+            const output = document.querySelector('output[for="rating"]');
+            rating.addEventListener('input', function() {
+                output.textContent = this.value;
+            });
+        }
+
+        // Надёжность пароля
+        function checkPasswordStrength() {
+            const password = document.getElementById('reg-password');
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthText = document.getElementById('password-strength-text');
+            if (!password || !strengthBar || !strengthText) return;
+            const value = password.value;
+            let strength = 0;
+            if (value.length === 0) {
+                strengthBar.style.width = '0%';
+                strengthText.textContent = 'Введите пароль';
+                return;
+            }
+            if (value.length >= 8) strength += 25;
+            if (/\d/.test(value)) strength += 25;
+            if (/[a-z]/.test(value) && /[A-Z]/.test(value)) strength += 25;
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) strength += 25;
+            strengthBar.style.width = strength + '%';
+            if (strength <= 25) {
+                strengthBar.style.backgroundColor = '#e74c3c';
+                strengthText.textContent = 'Слабый пароль';
+            } else if (strength <= 50) {
+                strengthBar.style.backgroundColor = '#f39c12';
+                strengthText.textContent = 'Средний пароль';
+            } else if (strength <= 75) {
+                strengthBar.style.backgroundColor = '#f1c40f';
+                strengthText.textContent = 'Хороший пароль';
+            } else {
+                strengthBar.style.backgroundColor = '#2ecc71';
+                strengthText.textContent = 'Надёжный пароль';
+            }
+        }
+
+        // Совпадение паролей
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('reg-password');
+            const confirmPassword = document.getElementById('reg-confirm-password');
+            if (password && confirmPassword) {
+                confirmPassword.addEventListener('keyup', function() {
+                    this.style.border = password.value !== confirmPassword.value
+                        ? '2px solid #e74c3c'
+                        : '2px solid #2ecc71';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
